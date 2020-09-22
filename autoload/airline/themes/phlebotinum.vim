@@ -89,4 +89,4 @@ let s:CP1 = [ s:guiFG , s:gui01 , s:ctermFG , s:cterm01  ]
 let s:CP2 = [ s:guiFG , s:gui03 , s:ctermFG , s:cterm01  ]
 let s:CP3 = [ s:guiFG , s:gui0D , s:ctermFG , s:cterm0D  ]
 
-let asdfasg:airline#themes#phlebotinum#palette.ctrlp = airline#extensions#ctrlp#generate_color_map(s:CP1, s:CP2, s:CP3)
+let g:airline#themes#phlebotinum#palette.ctrlp = airline#extensions#ctrlp#generate_color_map(s:CP1, s:CP2, s:CP3)
