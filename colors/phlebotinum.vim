@@ -40,574 +40,338 @@ endif
 
 let s:background_color = "NONE"
 if has_key(s:overrides, "background") && has_key(s:overrides["background"], "guibg")
-    let s:background_color = s:overrides["background"]["guibg"]
+  let s:background_color = s:overrides["background"]["guibg"]
 endif
 
+let s:term_italic = 0
+if has_key(s:overrides, "use_term_italic")
+  let s:term_italic = s:overrides["use_term_italic"]
+endif
+let s:gui_italic = 0
+if has_key(s:overrides, "use_gui_italic")
+  let s:gui_italic = s:overrides["use_gui_italic"]
+endif
+
+" TODO: do something with this
 if exists("g:phlebotinum_black")
   let s:termBlack = g:phlebotinum_black
 else
   let s:termBlack = "Gray"
 endif
 
-" Color approximation functions
-if &t_Co == 88
+" Palettes
+" --------
+let s:_darkblack   = { "gui": "#151515", "cterm": "16" }
+let s:_black       = { "gui": "#1c1c1c", "cterm": "234" }
+let s:_lightblack  = { "gui": "#262626", "cterm": "235" }
+let s:_lightblack2 = { "gui": "#303030", "cterm": "236" }
+let s:_lightblack3 = { "gui": "#444444", "cterm": "238" }
+let s:_darkgrey    = { "gui": "#585858", "cterm": "240" }
+let s:_grey        = { "gui": "#6c6c6c", "cterm": "242" }
+let s:_lightgrey   = { "gui": "#808080", "cterm": "244" }
+let s:_lightgrey2  = { "gui": "#c0c5ce", "cterm": "251" }
+let s:_lightgrey3  = { "gui": "#cdd3de", "cterm": "252" }
+let s:_coolgrey    = { "gui": "#65737e", "cterm": "66" }
+let s:_coolgrey2   = { "gui": "#4f5b66", "cterm": "59" }
+let s:_coolgrey3   = { "gui": "#a7adba", "cterm": "145" }
+let s:_darkwhite   = { "gui": "#888888", "cterm": "245" }
+let s:_darkwhite2  = { "gui": "#d8dee9", "cterm": "188" }
+let s:_white       = { "gui": "#bcbcbc", "cterm": "250" }
+                                                   
+let s:_darkred     = { "gui": "#5f0000", "cterm": "52" }
+let s:_lightred    = { "gui": "#af5f5f", "cterm": "131" }
+let s:_lightred2   = { "gui": "#ab7967", "cterm": "137" }
+let s:_yellow      = { "gui": "#E6DB74", "cterm": "184" }
+let s:_orange      = { "gui": "#fac863", "cterm": "221" }
+let s:_orange2     = { "gui": "#ffba7b", "cterm": "215" }
+let s:_brown       = { "gui": "#87875f", "cterm": "101" }
+let s:_green       = { "gui": "#5f875f", "cterm": "65" }
+let s:_green2      = { "gui": "#87af87", "cterm": "108" }
+let s:_teal        = { "gui": "#5f8787", "cterm": "66" }
+let s:_cyan        = { "gui": "#008080", "cterm": "6" }
+let s:_cyan2       = { "gui": "#5fafaf", "cterm": "73" }
+let s:_cyan3       = { "gui": "#5fb3b3", "cterm": "73" }
+let s:_blue        = { "gui": "#b1d8f6", "cterm": "153" }
+let s:_blue2       = { "gui": "#8fafd7", "cterm": "110" }
+let s:_blue3       = { "gui": "#5f87af", "cterm": "67" }
+let s:_purple      = { "gui": "#5f5f87", "cterm": "60" }
+let s:_purple2     = { "gui": "#8787af", "cterm": "103" }
+let s:_pink        = { "gui": "#c594c5", "cterm": "176" }
 
-  " returns an approximate grey index for the given grey level
-  fun! s:grey_number(x)
-    if a:x < 23
-      return 0
-    elseif a:x < 69
-      return 1
-    elseif a:x < 103
-      return 2
-    elseif a:x < 127
-      return 3
-    elseif a:x < 150
-      return 4
-    elseif a:x < 173
-      return 5
-    elseif a:x < 196
-      return 6
-    elseif a:x < 219
-      return 7
-    elseif a:x < 243
-      return 8
-    else
-      return 9
-    endif
-  endfun
+let s:br_green     = { "gui": "#008080", "cterm": "6" }
+let s:br_yellow    = { "gui": "#ffffaf", "cterm": "229" }
+let s:br_orange    = { "gui": "#ff8700", "cterm": "208" }
+let s:br_blue      = { "gui": "#8fafd7", "cterm": "110" }
+let s:br_purple    = { "gui": "#c594c5", "cterm": "176" }
+let s:br_cyan      = { "gui": "#5fb3b3", "cterm": "73" }
+let s:br_white     = { "gui": "#FFFFFF", "cterm": "231" }
 
-  " returns the actual grey level represented by the grey index
-  fun! s:grey_level(n)
-    if a:n == 0
-      return 0
-    elseif a:n == 1
-      return 46
-    elseif a:n == 2
-      return 92
-    elseif a:n == 3
-      return 115
-    elseif a:n == 4
-      return 139
-    elseif a:n == 5
-      return 162
-    elseif a:n == 6
-      return 185
-    elseif a:n == 7
-      return 208
-    elseif a:n == 8
-      return 231
-    else
-      return 255
-    endif
-  endfun
+let s:_fg          = { "gui": s:_white.gui, "cterm": s:_white.cterm }
+let s:_bg          = { "gui": s:background_color, "cterm": s:_lightblack.cterm }
 
-  " returns the palette index for the given grey index
-  fun! s:grey_color(n)
-    if a:n == 0
-      return 16
-    elseif a:n == 9
-      return 79
-    else
-      return 79 + a:n
-    endif
-  endfun
+" Convenience method for setting highlight group
+" --------
+function! s:highlight_group(group, style)
+  let s:ctermformat = "NONE"
+  let s:guiformat = "NONE"
+  if has_key(a:style, "format")
+    let s:ctermformat = a:style.format
+    let s:guiformat = a:style.format
+  endif
+  if s:term_italic == 0
+    let s:ctermformat = substitute(s:ctermformat, ",italic", "", "")
+    let s:ctermformat = substitute(s:ctermformat, "italic,", "", "")
+    let s:ctermformat = substitute(s:ctermformat, "italic", "", "")
+  endif
+  if s:gui_italic == 0
+    let s:guiformat = substitute(s:guiformat, ",italic", "", "")
+    let s:guiformat = substitute(s:guiformat, "italic,", "", "")
+    let s:guiformat = substitute(s:guiformat, "italic", "", "")
+  endif
+  let l:ctermfg = (has_key(a:style, "fg") ? a:style.fg.cterm : "NONE")
+  let l:ctermbg = (has_key(a:style, "bg") ? a:style.bg.cterm : "NONE")
+  execute "highlight" a:group
+    \ "guifg="   (has_key(a:style, "fg") ? a:style.fg.gui : "NONE")
+    \ "guibg="   (has_key(a:style, "bg") ? a:style.bg.gui : "NONE")
+    \ "guisp="   (has_key(a:style, "sp") ? a:style.sp.gui : "NONE")
+    \ "gui="     (!empty(s:guiformat) ? s:guiformat : "NONE")
+    \ "ctermfg=" . l:ctermfg
+    \ "ctermbg=" . l:ctermbg
+    \ "cterm="   (!empty(s:ctermformat) ? s:ctermformat : "NONE")
+endfunction
 
-  " returns an approximate color index for the given color level
-  fun! s:rgb_number(x)
-    if a:x < 69
-      return 0
-    elseif a:x < 172
-      return 1
-    elseif a:x < 230
-      return 2
-    else
-      return 3
-    endif
-  endfun
 
-  " returns the actual color level for the given color index
-  fun! s:rgb_level(n)
-    if a:n == 0
-      return 0
-    elseif a:n == 1
-      return 139
-    elseif a:n == 2
-      return 205
-    else
-      return 255
-    endif
-  endfun
+" True Colors
+" -----------
+if (!s:low_color)
+  " Generic Syntax Highlighting
+  " ---------------------------
+  call s:highlight_group("Normal", { "fg": s:_fg, "bg": s:_bg })
+  call s:highlight_group("NonText", {"fg": s:_darkgrey})
+  call s:highlight_group("EndOfBuffer", {"fg": s:_darkgrey})
+  call s:highlight_group("LineNr", {"fg": s:_grey, "bg": s:_black})
+  call s:highlight_group("FoldColumn", {"fg": s:_grey, "bg": s:_black})
+  call s:highlight_group("Folded", {"fg": s:_grey, "bg": s:_black})
+  call s:highlight_group("MatchParen", {"fg": s:br_yellow, "bg": s:_black})
+  call s:highlight_group("SignColumn", {"fg": s:_grey, "bg": s:_black})
+  call s:highlight_group("Comment", {"fg": s:_darkgrey})
+  call s:highlight_group("Conceal", {"fg": s:_white})
+  call s:highlight_group("Constant", {"fg": s:_orange})
+  call s:highlight_group("Error", {"fg": s:_lightred, "format": "reverse"})
+  call s:highlight_group("Identifier", {"fg": s:_blue})
+  call s:highlight_group("Ignore", {})
+  call s:highlight_group("PreProc", {"fg": s:_teal})
+  call s:highlight_group("Special", {"fg": s:_green})
+  call s:highlight_group("Statement", {"fg": s:_blue2})
+  call s:highlight_group("String", {"fg": s:_green2})
+  call s:highlight_group("Todo", {"format": "reverse"})
+  call s:highlight_group("Type", {"fg": s:_purple2})
+  call s:highlight_group("Underlined", {"fg": s:_teal, "format": "underline"})
+  call s:highlight_group("Pmenu", {"fg": s:_white, "bg": s:_lightblack3})
+  call s:highlight_group("PmenuSbar", {"bg": s:_darkgrey})
+  call s:highlight_group("PmenuSel", {"fg": s:_bg, "bg": s:_teal})
+  call s:highlight_group("PmenuThumb", {"fg": s:_teal, "bg": s:_teal})
+  call s:highlight_group("ErrorMsg", {"fg": s:_bg, "bg": s:_lightred})
+  call s:highlight_group("ModeMsg", {"fg": s:_bg, "bg": s:_green2})
+  call s:highlight_group("MoreMsg", {"fg": s:_teal})
+  call s:highlight_group("Question", {"fg": s:_green2})
+  call s:highlight_group("WarningMsg", {"fg": s:_lightred})
+  call s:highlight_group("TabLine", {"fg": s:_brown, "bg": s:_lightblack3})
+  call s:highlight_group("TabLineFill", {"fg": s:_lightblack3, "bg": s:_lightblack3})
+  call s:highlight_group("TabLineSel", {"fg": s:_bg, "bg": s:_brown})
+  call s:highlight_group("ToolbarLine", {"bg": s:_black})
+  call s:highlight_group("ToolbarButton", {"fg": s:_white, "bg": s:_darkgrey})
+  call s:highlight_group("Cursor", {"bg": s:_grey})
+  call s:highlight_group("CursorColumn", {"bg": s:_lightblack2})
+  call s:highlight_group("CursorLineNr", {"fg": s:_cyan2, "bg": s:_lightblack2})
+  call s:highlight_group("CursorLine", {"bg": s:_lightblack2})
+  call s:highlight_group("helpLeadBlank", {})
+  call s:highlight_group("helpNormal", {})
+  call s:highlight_group("StatusLine", {"fg": s:_bg, "bg": s:_brown})
+  call s:highlight_group("StatusLineNC", {"fg": s:_brown, "bg": s:_lightblack3})
+  call s:highlight_group("StatusLineTerm", {"fg": s:_bg, "bg": s:_brown})
+  call s:highlight_group("StatusLineTermNC", {"fg": s:_brown, "bg": s:_lightblack3})
+  call s:highlight_group("Visual", {"fg": s:_blue2, "bg": s:_bg, "format": "reverse"})
+  call s:highlight_group("VisualNOS", {"format": "underline"})
+  call s:highlight_group("VertSplit", {"fg": s:_lightblack3, "bg": s:_lightblack3})
+  call s:highlight_group("WildMenu", {"fg": s:_bg, "bg": s:_blue2})
+  call s:highlight_group("Function", {"fg": s:br_yellow})
+  call s:highlight_group("SpecialKey", {"fg": s:_darkgrey})
+  call s:highlight_group("Title", {"fg": s:br_white})
+  call s:highlight_group("DiffAdd", {"fg": s:_green2, "bg": s:_bg, "format": "reverse"})
+  call s:highlight_group("DiffChange", {"fg": s:_purple2, "bg": s:_bg, "format": "reverse"})
+  call s:highlight_group("DiffDelete", {"fg": s:_lightred, "bg": s:_bg, "format": "reverse"})
+  call s:highlight_group("DiffText", {"fg": s:_orange, "bg": s:_bg, "format": "reverse"})
+  call s:highlight_group("IncSearch", {"fg": s:_bg, "bg": s:_lightred})
+  call s:highlight_group("Search", {"fg": s:_bg, "bg": s:br_yellow})
+  call s:highlight_group("Directory", {"fg": s:_cyan2})
+  call s:highlight_group("debugPC", {"bg": s:_blue})
+  call s:highlight_group("debugBreakpoint", {"bg": s:_lightred})
+  call s:highlight_group("SpellBad", {"fg": s:_lightred, "format": "undercurl", "sp": s:_lightred})
+  call s:highlight_group("SpellCap", {"fg": s:_cyan2, "format": "undercurl", "sp": s:_cyan2})
+  call s:highlight_group("SpellLocal", {"fg": s:_green, "format": "undercurl", "sp": s:_green})
+  call s:highlight_group("SpellRare", {"fg": s:_orange, "format": "undercurl", "sp": s:_orange})
+  call s:highlight_group("ColorColumn", {"bg": s:_black})
 
-  " returns the palette index for the given R/G/B color indices
-  fun! s:rgb_color(x, y, z)
-    return 16 + (a:x * 16) + (a:y * 4) + a:z
-  endfun
+" False Colors
+" -----------
+elseif &t_Co == 8 || $TERM !~# '^linux' || &t_Co == 16
+  set t_Co=16
 
-else " assuming &t_Co == 256
-
-  " returns an approximate grey index for the given grey level
-  fun! s:grey_number(x)
-    if a:x < 14
-      return 0
-    else
-      let l:n = (a:x - 8) / 10
-      let l:m = (a:x - 8) % 10
-      if l:m < 5
-        return l:n
-      else
-        return l:n + 1
-      endif
-    endif
-  endfun
-
-  " returns the actual grey level represented by the grey index
-  fun! s:grey_level(n)
-    if a:n == 0
-      return 0
-    else
-      return 8 + (a:n * 10)
-    endif
-  endfun
-
-  " returns the palette index for the given grey index
-  fun! s:grey_color(n)
-    if a:n == 0
-      return 16
-    elseif a:n == 25
-      return 231
-    else
-      return 231 + a:n
-    endif
-  endfun
-
-  " returns an approximate color index for the given color level
-  fun! s:rgb_number(x)
-    if a:x < 75
-      return 0
-    else
-      let l:n = (a:x - 55) / 40
-      let l:m = (a:x - 55) % 40
-      if l:m < 20
-        return l:n
-      else
-        return l:n + 1
-      endif
-    endif
-  endfun
-
-  " returns the actual color level for the given color index
-  fun! s:rgb_level(n)
-    if a:n == 0
-      return 0
-    else
-      return 55 + (a:n * 40)
-    endif
-  endfun
-
-  " returns the palette index for the given R/G/B color indices
-  fun! s:rgb_color(x, y, z)
-    return 16 + (a:x * 36) + (a:y * 6) + a:z
-  endfun
-
+  hi Normal ctermbg=black ctermfg=lightgrey cterm=NONE
+  hi NonText ctermbg=NONE ctermfg=darkgrey cterm=NONE
+  hi EndOfBuffer ctermbg=NONE ctermfg=darkgrey cterm=NONE
+  hi LineNr ctermbg=black ctermfg=lightgrey cterm=NONE
+  hi FoldColumn ctermbg=black ctermfg=lightgrey cterm=NONE
+  hi Folded ctermbg=black ctermfg=lightgrey cterm=NONE
+  hi MatchParen ctermbg=black ctermfg=yellow cterm=NONE
+  hi SignColumn ctermbg=black ctermfg=lightgrey cterm=NONE
+  hi Comment ctermbg=NONE ctermfg=darkgrey cterm=NONE
+  hi Conceal ctermbg=NONE ctermfg=lightgrey cterm=NONE
+  hi Constant ctermbg=NONE ctermfg=red cterm=NONE
+  hi Error ctermbg=NONE ctermfg=darkred cterm=reverse
+  hi Identifier ctermbg=NONE ctermfg=darkblue cterm=NONE
+  hi Ignore ctermbg=NONE ctermfg=NONE cterm=NONE
+  hi PreProc ctermbg=NONE ctermfg=darkcyan cterm=NONE
+  hi Special ctermbg=NONE ctermfg=darkgreen cterm=NONE
+  hi Statement ctermbg=NONE ctermfg=blue cterm=NONE
+  hi String ctermbg=NONE ctermfg=green cterm=NONE
+  hi Todo ctermbg=NONE ctermfg=NONE cterm=reverse
+  hi Type ctermbg=NONE ctermfg=magenta cterm=NONE
+  hi Underlined ctermbg=NONE ctermfg=darkcyan cterm=underline
+  hi Pmenu ctermbg=darkgrey ctermfg=lightgrey cterm=NONE
+  hi PmenuSbar ctermbg=darkgrey ctermfg=NONE cterm=NONE
+  hi PmenuSel ctermbg=darkcyan ctermfg=black cterm=NONE
+  hi PmenuThumb ctermbg=darkcyan ctermfg=darkcyan cterm=NONE
+  hi ErrorMsg ctermbg=darkred ctermfg=black cterm=NONE
+  hi ModeMsg ctermbg=green ctermfg=black cterm=NONE
+  hi MoreMsg ctermbg=NONE ctermfg=darkcyan cterm=NONE
+  hi Question ctermbg=NONE ctermfg=green cterm=NONE
+  hi WarningMsg ctermbg=NONE ctermfg=darkred cterm=NONE
+  hi TabLine ctermbg=darkgrey ctermfg=darkyellow cterm=NONE
+  hi TabLineFill ctermbg=darkgrey ctermfg=darkgrey cterm=NONE
+  hi TabLineSel ctermbg=darkyellow ctermfg=black cterm=NONE
+  hi ToolbarLine ctermbg=black ctermfg=NONE cterm=NONE
+  hi ToolbarButton ctermbg=darkgrey ctermfg=lightgrey cterm=NONE
+  hi Cursor ctermbg=lightgrey ctermfg=NONE cterm=NONE
+  hi CursorColumn ctermbg=darkgrey ctermfg=NONE cterm=NONE
+  hi CursorLineNr ctermbg=darkgrey ctermfg=cyan cterm=NONE
+  hi CursorLine ctermbg=darkgrey ctermfg=NONE cterm=NONE
+  hi helpLeadBlank ctermbg=NONE ctermfg=NONE cterm=NONE
+  hi helpNormal ctermbg=NONE ctermfg=NONE cterm=NONE
+  hi StatusLine ctermbg=darkyellow ctermfg=black cterm=NONE
+  hi StatusLineNC ctermbg=darkgrey ctermfg=darkyellow cterm=NONE
+  hi StatusLineTerm ctermbg=darkyellow ctermfg=black cterm=NONE
+  hi StatusLineTermNC ctermbg=darkgrey ctermfg=darkyellow cterm=NONE
+  hi Visual ctermbg=black ctermfg=blue cterm=reverse
+  hi VisualNOS ctermbg=NONE ctermfg=NONE cterm=underline
+  hi VertSplit ctermbg=darkgrey ctermfg=darkgrey cterm=NONE
+  hi WildMenu ctermbg=blue ctermfg=black cterm=NONE
+  hi Function ctermbg=NONE ctermfg=yellow cterm=NONE
+  hi SpecialKey ctermbg=NONE ctermfg=darkgrey cterm=NONE
+  hi Title ctermbg=NONE ctermfg=white cterm=NONE
+  hi DiffAdd ctermbg=black ctermfg=green cterm=reverse
+  hi DiffChange ctermbg=black ctermfg=magenta cterm=reverse
+  hi DiffDelete ctermbg=black ctermfg=darkred cterm=reverse
+  hi DiffText ctermbg=black ctermfg=red cterm=reverse
+  hi IncSearch ctermbg=darkred ctermfg=black cterm=NONE
+  hi Search ctermbg=yellow ctermfg=black cterm=NONE
+  hi Directory ctermbg=NONE ctermfg=cyan cterm=NONE
+  hi debugPC ctermbg=darkblue ctermfg=NONE cterm=NONE
+  hi debugBreakpoint ctermbg=darkred ctermfg=NONE cterm=NONE
+  hi SpellBad ctermbg=NONE ctermfg=darkred cterm=undercurl
+  hi SpellCap ctermbg=NONE ctermfg=cyan cterm=undercurl
+  hi SpellLocal ctermbg=NONE ctermfg=darkgreen cterm=undercurl
+  hi SpellRare ctermbg=NONE ctermfg=red cterm=undercurl
+  hi ColorColumn ctermbg=black ctermfg=NONE cterm=NONE
 endif
 
-" returns the palette index to approximate the given R/G/B color levels
-fun! s:color(r, g, b)
-  " map greys directly (see xterm's 256colres.pl)
-  if &t_Co == 256 && a:r == a:g && a:g == a:b && a:r > 3 && a:r < 243
-    return (a:r - 8) / 10 + 232
-  endif
+" Dupes
+" -----
+hi link Terminal Normal
+hi link Number Constant
+hi link CursorIM Cursor
+hi link Boolean Constant
+hi link Character Constant
+hi link Conditional Statement
+hi link Debug Special
+hi link Define PreProc
+hi link Delimiter Special
+hi link Exception Statement
+hi link Float Number
+hi link HelpCommand Statement
+hi link HelpExample Statement
+hi link Include PreProc
+hi link Keyword Statement
+hi link Label Statement
+hi link Macro PreProc
+hi link Number Constant
+hi link Operator Statement
+hi link PreCondit PreProc
+hi link Repeat Statement
+hi link SpecialChar Special
+hi link SpecialComment Special
+hi link StorageClass Type
+hi link Structure Type
+hi link Tag Special
+hi link Terminal Normal
+hi link Typedef Type
+hi link htmlEndTag htmlTagName
+hi link htmlLink Function
+hi link htmlSpecialTagName htmlTagName
+hi link htmlTag htmlTagName
+hi link htmlBold Normal
+hi link htmlItalic Normal
+hi link xmlTag Statement
+hi link xmlTagName Statement
+hi link xmlEndTag Statement
+hi link markdownItalic Preproc
+hi link asciidocQuotedEmphasized Preproc
+hi link diffBDiffer WarningMsg
+hi link diffCommon WarningMsg
+hi link diffDiffer WarningMsg
+hi link diffIdentical WarningMsg
+hi link diffIsA WarningMsg
+hi link diffNoEOL WarningMsg
+hi link diffOnly WarningMsg
+hi link diffRemoved WarningMsg
+hi link diffAdded String
+hi link QuickFixLine Search
 
-  " get the closest grey
-  let l:gx = s:grey_number(a:r)
-  let l:gy = s:grey_number(a:g)
-  let l:gz = s:grey_number(a:b)
+let g:terminal_ansi_colors = [
+        \ s:_black.gui,
+        \ s:_lightred.gui,
+        \ s:_green.gui,
+        \ s:_brown.gui,
+        \ s:_blue.gui,
+        \ s:_purple.gui,
+        \ s:_green.gui,
+        \ s:_grey.gui,
+        \ s:_lightblack3.gui,
+        \ s:_orange.gui,
+        \ s:_green2.gui,
+        \ s:_yellow.gui,
+        \ s:_blue.gui,
+        \ s:_purple2.gui,
+        \ s:_cyan2.gui,
+        \ s:_white.gui
+        \ ]
 
-  " get the closest color
-  let l:x = s:rgb_number(a:r)
-  let l:y = s:rgb_number(a:g)
-  let l:z = s:rgb_number(a:b)
-
-  if l:gx == l:gy && l:gy == l:gz
-    " there are two possibilities
-    let l:dgr = s:grey_level(l:gx) - a:r
-    let l:dgg = s:grey_level(l:gy) - a:g
-    let l:dgb = s:grey_level(l:gz) - a:b
-    let l:dgrey = (l:dgr * l:dgr) + (l:dgg * l:dgg) + (l:dgb * l:dgb)
-    let l:dr = s:rgb_level(l:gx) - a:r
-    let l:dg = s:rgb_level(l:gy) - a:g
-    let l:db = s:rgb_level(l:gz) - a:b
-    let l:drgb = (l:dr * l:dr) + (l:dg * l:dg) + (l:db * l:db)
-    if l:dgrey < l:drgb
-      " use the grey
-      return s:grey_color(l:gx)
-    else
-      " use the color
-      return s:rgb_color(l:x, l:y, l:z)
-    endif
-  else
-    " only one possibility
-    return s:rgb_color(l:x, l:y, l:z)
-  endif
-endfun
-
-fun! s:is_empty_or_none(str)
-  return empty(a:str) || a:str ==? "NONE"
-endfun
-
-" returns the palette index to approximate the 'rrggbb' hex string
-fun! s:rgb(rgb)
-  if s:is_empty_or_none(a:rgb)
-    return "NONE"
-  endif
-  let l:r = ("0x" . strpart(a:rgb, 0, 2)) + 0
-  let l:g = ("0x" . strpart(a:rgb, 2, 2)) + 0
-  let l:b = ("0x" . strpart(a:rgb, 4, 2)) + 0
-  return s:color(l:r, l:g, l:b)
-endfun
-
-fun! s:prefix_highlight_value_with(prefix, color)
-  if s:is_empty_or_none(a:color)
-    return "NONE"
-  else
-    return a:prefix . a:color
-  endif
-endfun
-
-fun! s:remove_italic_attr(attr)
-  let l:attr = join(filter(split(a:attr, ","), "v:val !=? 'italic'"), ",")
-  if empty(l:attr)
-    let l:attr = "NONE"
-  endif
-  return l:attr
-endfun
-
-" sets the highlighting for the given group
-fun! s:X(group, fg, bg, attr, lcfg, lcbg)
-  if s:low_color
-    let l:cmd = "hi ".a:group.
-    \ " ctermfg=".s:prefix_highlight_value_with("", a:lcfg).
-    \ " ctermbg=".s:prefix_highlight_value_with("", a:lcbg)
-  else
-    let l:cmd = "hi ".a:group.
-    \ " guifg=".s:prefix_highlight_value_with("#", a:fg).
-    \ " guibg=".s:prefix_highlight_value_with("#", a:bg)
-    if !s:true_color
-      let l:cmd = l:cmd.
-      \ " ctermfg=".s:rgb(a:fg).
-      \ " ctermbg=".s:rgb(a:bg)
-    endif
-  endif
-
-  let l:attr = s:prefix_highlight_value_with("", a:attr)
-  let l:cterm_attr = l:attr
-  let l:gui_attr = l:attr
-
-  let l:cmd = l:cmd." gui=".l:gui_attr." cterm=".l:cterm_attr
-  exec l:cmd
-endfun
-" }}}
-
-call s:X("Normal","e8e8d3",s:background_color,"","White","")
-set background=dark
-
-call s:X("CursorLine","","1c1c1c","","",s:termBlack)
-call s:X("CursorColumn","","1c1c1c","","",s:termBlack)
-
-let s:matchParenGuiFg = "ffffff"
-let s:matchParenGuiBg = "556779"
-if s:termBlack != "Black"
-    let s:matchParenTermFg = "Magenta"
-    let s:matchParenTermBg = ""
-else
-    let s:matchParenTermFg = ""
-    let s:matchParenTermBg = s:termBlack
+if has("nvim") && exists("&termguicolors") && &termguicolors
+  let g:terminal_color_0  = s:_black.gui
+  let g:terminal_color_1  = s:_lightred.gui
+  let g:terminal_color_2  = s:_green.gui
+  let g:terminal_color_3  = s:_brown.gui
+  let g:terminal_color_4  = s:_blue.gui
+  let g:terminal_color_5  = s:_purple.gui
+  let g:terminal_color_6  = s:_green.gui
+  let g:terminal_color_7  = s:_grey.gui
+  let g:terminal_color_8  = s:_lightblack3.gui
+  let g:terminal_color_9  = s:_orange.gui
+  let g:terminal_color_10 = s:_green2.gui
+  let g:terminal_color_11 = s:_yellow.gui
+  let g:terminal_color_12 = s:_blue.gui
+  let g:terminal_color_13 = s:_purple2.gui
+  let g:terminal_color_14 = s:_cyan2.gui
+  let g:terminal_color_15 = s:_white.gui
 endif
-call s:X("MatchParen",s:matchParenGuiFg,s:matchParenGuiBg,"bold",
-\                     s:matchParenTermFg,s:matchParenTermBg)
-
-call s:X("TabLine","000000","b0b8c0","italic","",s:termBlack)
-call s:X("TabLineFill","9098a0","","","",s:termBlack)
-call s:X("TabLineSel","000000","f0f0f0","italic,bold",s:termBlack,"White")
-
-" Auto-completion
-call s:X("Pmenu","ffffff","606060","","White",s:termBlack)
-call s:X("PmenuSel","101010","eeeeee","",s:termBlack,"White")
-
-call s:X("Visual","","404040","","",s:termBlack)
-call s:X("Cursor",s:background_color,"b0d0f0","","","")
-
-call s:X("LineNr","605958",s:background_color,"NONE",s:termBlack,"")
-call s:X("CursorLineNr","ccc5c4","","NONE","White","")
-call s:X("Comment","888888","","italic","Grey","")
-call s:X("Todo","c7c7c7","","bold","White",s:termBlack)
-
-call s:X("StatusLine","000000","dddddd","italic","","White")
-call s:X("StatusLineNC","ffffff","403c41","italic","White","Black")
-call s:X("VertSplit","777777","403c41","",s:termBlack,s:termBlack)
-call s:X("WildMenu","f0a0c0","302028","","Magenta","")
-
-call s:X("Folded","a0a8b0","384048","italic",s:termBlack,"")
-call s:X("FoldColumn","535D66","1f1f1f","","",s:termBlack)
-call s:X("SignColumn","777777","333333","","",s:termBlack)
-call s:X("ColorColumn","","000000","","",s:termBlack)
-
-call s:X("Title","70b950","","bold","Green","")
-
-call s:X("Constant","cf6a4c","","","Red","")
-call s:X("Special","799d6a","","","Green","")
-call s:X("Delimiter","668799","","","Grey","")
-
-call s:X("String","99ad6a","","","Green","")
-call s:X("StringDelimiter","556633","","","DarkGreen","")
-
-call s:X("Identifier","c6b6ee","","","LightCyan","")
-call s:X("Structure","8fbfdc","","","LightCyan","")
-call s:X("Function","fad07a","","","Yellow","")
-call s:X("Statement","8197bf","","","DarkBlue","")
-call s:X("PreProc","8fbfdc","","","LightBlue","")
-
-hi! link Operator Structure
-hi! link Conceal Operator
-
-call s:X("Type","ffb964","","","Yellow","")
-call s:X("NonText","606060",s:background_color,"",s:termBlack,"")
-
-call s:X("SpecialKey","444444","1c1c1c","",s:termBlack,"")
-
-call s:X("Search","f0a0c0","302028","underline","Magenta","")
-
-call s:X("Directory","dad085","","","Yellow","")
-call s:X("ErrorMsg","","902020","","","DarkRed")
-hi! link Error ErrorMsg
-hi! link MoreMsg Special
-call s:X("Question","65C254","","","Green","")
-
-
-" Spell Checking
-
-call s:X("SpellBad","","902020","underline","","DarkRed")
-call s:X("SpellCap","","0000df","underline","","Blue")
-call s:X("SpellRare","","540063","underline","","DarkMagenta")
-call s:X("SpellLocal","","2D7067","underline","","Green")
-
-" Diff
-
-hi! link diffRemoved Constant
-hi! link diffAdded String
-
-" VimDiff
-
-call s:X("DiffAdd","D2EBBE","437019","","White","DarkGreen")
-call s:X("DiffDelete","40000A","700009","","DarkRed","DarkRed")
-call s:X("DiffChange","","2B5B77","","White","DarkBlue")
-call s:X("DiffText","8fbfdc","000000","reverse","Yellow","")
-
-" PHP
-
-hi! link phpFunctions Function
-call s:X("StorageClass","c59f6f","","","Red","")
-hi! link phpSuperglobal Identifier
-hi! link phpQuoteSingle StringDelimiter
-hi! link phpQuoteDouble StringDelimiter
-hi! link phpBoolean Constant
-hi! link phpNull Constant
-hi! link phpArrayPair Operator
-hi! link phpOperator Normal
-hi! link phpRelation Normal
-hi! link phpVarSelector Identifier
-
-" Python
-
-hi! link pythonOperator Statement
-
-" Ruby
-
-hi! link rubySharpBang Comment
-call s:X("rubyClass","447799","","","DarkBlue","")
-call s:X("rubyIdentifier","c6b6fe","","","Cyan","")
-hi! link rubyConstant Type
-hi! link rubyFunction Function
-
-call s:X("rubyInstanceVariable","c6b6fe","","","Cyan","")
-call s:X("rubySymbol","7697d6","","","Blue","")
-hi! link rubyGlobalVariable rubyInstanceVariable
-hi! link rubyModule rubyClass
-call s:X("rubyControl","7597c6","","","Blue","")
-
-hi! link rubyString String
-hi! link rubyStringDelimiter StringDelimiter
-hi! link rubyInterpolationDelimiter Identifier
-
-call s:X("rubyRegexpDelimiter","540063","","","Magenta","")
-call s:X("rubyRegexp","dd0093","","","DarkMagenta","")
-call s:X("rubyRegexpSpecial","a40073","","","Magenta","")
-
-call s:X("rubyPredefinedIdentifier","de5577","","","Red","")
-
-" Erlang
-
-hi! link erlangAtom rubySymbol
-hi! link erlangBIF rubyPredefinedIdentifier
-hi! link erlangFunction rubyPredefinedIdentifier
-hi! link erlangDirective Statement
-hi! link erlangNode Identifier
-
-" Elixir
-
-hi! link elixirAtom rubySymbol
-
-
-" JavaScript
-
-hi! link javaScriptValue Constant
-hi! link javaScriptRegexpString rubyRegexp
-hi! link javaScriptTemplateVar StringDelim
-hi! link javaScriptTemplateDelim Identifier
-hi! link javaScriptTemplateString String
-
-" CoffeeScript
-
-hi! link coffeeRegExp javaScriptRegexpString
-
-" Lua
-
-hi! link luaOperator Conditional
-
-" C
-
-hi! link cFormat Identifier
-hi! link cOperator Constant
-
-" Objective-C/Cocoa
-
-hi! link objcClass Type
-hi! link cocoaClass objcClass
-hi! link objcSubclass objcClass
-hi! link objcSuperclass objcClass
-hi! link objcDirective rubyClass
-hi! link objcStatement Constant
-hi! link cocoaFunction Function
-hi! link objcMethodName Identifier
-hi! link objcMethodArg Normal
-hi! link objcMessageName Identifier
-
-" Vimscript
-
-hi! link vimOper Normal
-
-" HTML
-
-hi! link htmlTag Statement
-hi! link htmlEndTag htmlTag
-hi! link htmlTagName htmlTag
-
-" XML
-
-hi! link xmlTag Statement
-hi! link xmlEndTag xmlTag
-hi! link xmlTagName xmlTag
-hi! link xmlEqual xmlTag
-hi! link xmlEntity Special
-hi! link xmlEntityPunct xmlEntity
-hi! link xmlDocTypeDecl PreProc
-hi! link xmlDocTypeKeyword PreProc
-hi! link xmlProcessingDelim xmlAttrib
-
-" Debugger.vim
-
-call s:X("DbgCurrent","DEEBFE","345FA8","","White","DarkBlue")
-call s:X("DbgBreakPt","","4F0037","","","DarkMagenta")
-
-" vim-indent-guides
-
-if !exists("g:indent_guides_auto_colors")
-  let g:indent_guides_auto_colors = 0
-endif
-call s:X("IndentGuidesOdd","","232323","","","")
-call s:X("IndentGuidesEven","","1b1b1b","","","")
-
-" Plugins, etc.
-
-hi! link TagListFileName Directory
-call s:X("PreciseJumpTarget","B9ED67","405026","","White","Green")
-
-" Manual overrides for 256-color terminals. Dark colors auto-map badly.
-if !s:low_color
-  hi StatusLineNC ctermbg=235
-  hi Folded ctermbg=236
-  hi DiffText ctermfg=81
-  hi DbgBreakPt ctermbg=53
-  hi IndentGuidesOdd ctermbg=235
-  hi IndentGuidesEven ctermbg=234
-endif
-
-if !empty("s:overrides")
-  fun! s:current_attr(group)
-    let l:synid = synIDtrans(hlID(a:group))
-    let l:attrs = []
-    for l:attr in ["bold", "italic", "reverse", "standout", "underline", "undercurl"]
-      if synIDattr(l:synid, l:attr, "gui") == 1
-        call add(l:attrs, l:attr)
-      endif
-    endfor
-    return join(l:attrs, ",")
-  endfun
-  fun! s:current_color(group, what, mode)
-    let l:color = synIDattr(synIDtrans(hlID(a:group)), a:what, a:mode)
-    if l:color == -1
-      return ""
-    else
-      return substitute(l:color, "^#", "", "")
-    endif
-  endfun
-  fun! s:load_color_def(group, def)
-    call s:X(a:group, get(a:def, "guifg", s:current_color(a:group, "fg", "gui")),
-    \                 get(a:def, "guibg", s:current_color(a:group, "bg", "gui")),
-    \                 get(a:def, "attr", s:current_attr(a:group)),
-    \                 get(a:def, "ctermfg", s:current_color(a:group, "fg", "cterm")),
-    \                 get(a:def, "ctermbg", s:current_color(a:group, "bg", "cterm")))
-    if !s:low_color
-      for l:prop in ["ctermfg", "ctermbg"]
-        let l:override_key = "256".l:prop
-        if has_key(a:def, l:override_key)
-          exec "hi ".a:group." ".l:prop."=".a:def[l:override_key]
-        endif
-      endfor
-    endif
-  endfun
-  fun! s:load_colors(defs)
-    for [l:group, l:def] in items(a:defs)
-      if l:group == "background"
-        call s:load_color_def("LineNr", l:def)
-        call s:load_color_def("NonText", l:def)
-        call s:load_color_def("Normal", l:def)
-      else
-        call s:load_color_def(l:group, l:def)
-      endif
-      unlet l:group
-      unlet l:def
-    endfor
-  endfun
-  call s:load_colors(s:overrides)
-  delf s:load_colors
-  delf s:load_color_def
-  delf s:current_color
-  delf s:current_attr
-endif
-
-" delete functions {{{
-delf s:X
-delf s:remove_italic_attr
-delf s:prefix_highlight_value_with
-delf s:rgb
-delf s:is_empty_or_none
-delf s:color
-delf s:rgb_color
-delf s:rgb_level
-delf s:rgb_number
-delf s:grey_color
-delf s:grey_level
-delf s:grey_number
-" }}}
