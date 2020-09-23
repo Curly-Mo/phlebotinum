@@ -39,8 +39,10 @@ let s:ctermFG = '250'
 
 let s:guiWhite = '#ffffff'
 let s:guiGray = '#666666'
+let s:guiBlack= '#151515'
 let s:ctermWhite = '231'
 let s:ctermGray = '243'
+let s:ctermBlack= '233'
 
 let g:airline#themes#phlebotinum#palette = {}
 let s:modified = { 'airline_c': [ s:gui09, '', s:cterm09, '', '' ] }
@@ -74,9 +76,9 @@ let g:airline#themes#phlebotinum#palette.replace = airline#themes#generate_color
 let g:airline#themes#phlebotinum#palette.replace_modified = s:modified
 
 " Inactive mode
-let s:IN1 = [ s:guiBG, s:gui01, s:ctermBG, s:cterm01 ]
-let s:IN2 = [ s:gui02, s:gui00, s:cterm02, s:cterm00 ]
-let s:IN3 = [ s:gui02, s:gui00, s:cterm02, s:cterm00 ]
+let s:IN1 = [ s:guiGray, s:gui00, s:ctermGray, s:cterm00 ]
+let s:IN2 = [ s:guiGray, s:gui00, s:ctermGray, s:cterm00 ]
+let s:IN3 = [ s:guiGray, s:gui00, s:ctermGray, s:cterm00 ]
 let g:airline#themes#phlebotinum#palette.inactive = airline#themes#generate_color_map(s:IN1, s:IN2, s:IN3)
 let g:airline#themes#phlebotinum#palette.inactive_modified = s:modified
 
