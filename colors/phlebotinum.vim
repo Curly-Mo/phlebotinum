@@ -2,7 +2,7 @@
 " Author:      Curly-Mo (github.com/Curly-Mo)
 " Author:      Colin Fahy (colin@cfahy.com)
 " Webpage:     https://github.com/Curly-Mo/phlebotinum
-" Version:     1.0
+" Version:     1.01
 " License:     LGPL
 " Description: When the Apprentice got his hands on some magic Beans.
 
@@ -43,13 +43,9 @@ if has_key(s:overrides, "background") && has_key(s:overrides["background"], "gui
   let s:background_color = s:overrides["background"]["guibg"]
 endif
 
-let s:term_italic = 0
-if has_key(s:overrides, "use_term_italic")
-  let s:term_italic = s:overrides["use_term_italic"]
-endif
-let s:gui_italic = 0
-if has_key(s:overrides, "use_gui_italic")
-  let s:gui_italic = s:overrides["use_gui_italic"]
+let s:disable_italics = 0
+if has_key(s:overrides, "disable_italics")
+  let s:disable_italics = s:overrides["disable_italics"]
 endif
 
 " TODO: do something with this
@@ -101,8 +97,8 @@ let s:_blue4       = { "gui": "#8197bf", "cterm": "67" }
 let s:_blue5       = { "gui": "#5f87af", "cterm": "67" }
 let s:_purple      = { "gui": "#5f5f87", "cterm": "60" }
 let s:_purple2     = { "gui": "#8787af", "cterm": "103" }
-let s:_pink     = { "gui": "#c6b6ee", "cterm": "183" }
-let s:_pink2        = { "gui": "#c594c5", "cterm": "176" }
+let s:_pink        = { "gui": "#c6b6ee", "cterm": "183" }
+let s:_pink2       = { "gui": "#c594c5", "cterm": "176" }
 
 let s:br_green     = { "gui": "#008080", "cterm": "6" }
 let s:br_yellow    = { "gui": "#ffffaf", "cterm": "229" }
@@ -124,12 +120,10 @@ function! s:highlight_group(group, style)
     let s:ctermformat = a:style.format
     let s:guiformat = a:style.format
   endif
-  if s:term_italic == 0
+  if s:disable_italics == 1
     let s:ctermformat = substitute(s:ctermformat, ",italic", "", "")
     let s:ctermformat = substitute(s:ctermformat, "italic,", "", "")
     let s:ctermformat = substitute(s:ctermformat, "italic", "", "")
-  endif
-  if s:gui_italic == 0
     let s:guiformat = substitute(s:guiformat, ",italic", "", "")
     let s:guiformat = substitute(s:guiformat, "italic,", "", "")
     let s:guiformat = substitute(s:guiformat, "italic", "", "")

@@ -10,7 +10,7 @@ let s:gui07 = '#d8dee9'
 let s:gui08 = '#5f0000'
 let s:gui09 = '#ffba7b'
 let s:gui0A = '#fac863'
-let s:gui0B = '#008080'
+let s:gui0B = '#5f8787'
 let s:gui0C = '#5fb3b3'
 let s:gui0D = '#b1d8f6'
 let s:gui0E = '#c594c5'
@@ -29,7 +29,7 @@ let s:cterm07 = '189'
 let s:cterm08 = '52'
 let s:cterm09 = '215'
 let s:cterm0A = '221'
-let s:cterm0B = '6'
+let s:cterm0B = '66'
 let s:cterm0C = '73'
 let s:cterm0D = '25'
 let s:cterm0E = '176'
@@ -46,37 +46,37 @@ let g:airline#themes#phlebotinum#palette = {}
 let s:modified = { 'airline_c': [ s:gui09, '', s:cterm09, '', '' ] }
 
 " Normal mode
-let s:N1 = [ s:guiFG , s:gui00, s:ctermFG , s:cterm00  ]
-let s:N2 = [ s:guiFG, s:gui01 , s:ctermFG, s:cterm01  ]
-let s:N3 = [ s:gui02 , s:gui00 , s:cterm02 , s:cterm00  ]
+let s:N1 = [ s:guiFG, s:gui00, s:ctermFG, s:cterm00  ]
+let s:N2 = [ s:guiFG, s:gui01, s:ctermFG, s:cterm01  ]
+let s:N3 = [ s:guiGray, s:gui00, s:ctermGray, s:cterm00  ]
 let g:airline#themes#phlebotinum#palette.normal = airline#themes#generate_color_map(s:N1, s:N2, s:N3)
 let g:airline#themes#phlebotinum#palette.normal_modified = s:modified
 
 " Insert mode
-let s:I1 = [ s:guiFG , s:gui0B , s:cterm00 , s:cterm0B  ]
+let s:I1 = [ s:guiBG, s:gui0B, s:ctermBG, s:cterm0B  ]
 let s:I2 = s:N2
-let s:I3 = [ s:gui02 , s:gui00 , s:ctermGray , s:cterm00  ]
+let s:I3 = [ s:guiGray, s:gui00, s:ctermGray, s:cterm00  ]
 let g:airline#themes#phlebotinum#palette.insert = airline#themes#generate_color_map(s:I1, s:I2, s:I3)
 let g:airline#themes#phlebotinum#palette.insert_modified = s:modified
 
 " Visual mode
-let s:V1 = [ s:guiFG , s:gui08 , s:ctermFG , s:cterm08 ]
+let s:V1 = [ s:guiFG, s:gui08, s:ctermFG, s:cterm08 ]
 let s:V2 = s:N2
 let s:V3 = s:I3
 let g:airline#themes#phlebotinum#palette.visual = airline#themes#generate_color_map(s:V1, s:V2, s:V3)
 let g:airline#themes#phlebotinum#palette.visual_modified = s:modified
 
 " Replace mode
-let s:R1 = [ s:gui08 , s:gui01 , s:cterm08, s:cterm00 ]
+let s:R1 = [ s:gui08, s:gui01, s:cterm08, s:cterm00 ]
 let s:R2 = s:N2
 let s:R3 = s:I3
 let g:airline#themes#phlebotinum#palette.replace = airline#themes#generate_color_map(s:R1, s:R2, s:R3)
 let g:airline#themes#phlebotinum#palette.replace_modified = s:modified
 
 " Inactive mode
-let s:IN1 = [ s:guiBG, s:gui01 , s:ctermBG, s:cterm01 ]
-let s:IN2 = [ s:gui02 , s:gui00 , s:cterm02 , s:cterm00 ]
-let s:IN3 = [ s:gui02 , s:gui00 , s:cterm02 , s:cterm00 ]
+let s:IN1 = [ s:guiBG, s:gui01, s:ctermBG, s:cterm01 ]
+let s:IN2 = [ s:gui02, s:gui00, s:cterm02, s:cterm00 ]
+let s:IN3 = [ s:gui02, s:gui00, s:cterm02, s:cterm00 ]
 let g:airline#themes#phlebotinum#palette.inactive = airline#themes#generate_color_map(s:IN1, s:IN2, s:IN3)
 let g:airline#themes#phlebotinum#palette.inactive_modified = s:modified
 
@@ -84,7 +84,7 @@ let g:airline#themes#phlebotinum#palette.inactive_modified = s:modified
 if !get(g:, 'loaded_ctrlp', 0)
   finish
 endif
-let s:CP1 = [ s:guiFG , s:gui01 , s:ctermFG , s:cterm01  ]
-let s:CP2 = [ s:guiFG , s:gui03 , s:ctermFG , s:cterm01  ]
-let s:CP3 = [ s:guiFG , s:gui0D , s:ctermFG , s:cterm0D  ]
+let s:CP1 = [ s:guiFG, s:gui01, s:ctermFG, s:cterm01  ]
+let s:CP2 = [ s:guiFG, s:gui03, s:ctermFG, s:cterm01  ]
+let s:CP3 = [ s:guiFG, s:gui0D, s:ctermFG, s:cterm0D  ]
 let g:airline#themes#phlebotinum#palette.ctrlp = airline#extensions#ctrlp#generate_color_map(s:CP1, s:CP2, s:CP3)
