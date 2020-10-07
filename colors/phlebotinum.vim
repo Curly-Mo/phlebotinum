@@ -75,6 +75,7 @@ let s:_darkwhite2  = { "gui": "#d8dee9", "cterm": "188" }
 let s:_white       = { "gui": "#bcbcbc", "cterm": "250" }
 
 let s:_darkred     = { "gui": "#5f0000", "cterm": "52" }
+let s:_darkred2    = { "gui": "#703020", "cterm": "131" }
 let s:_red         = { "gui": "#af5f5f", "cterm": "131" }
 let s:_lightred    = { "gui": "#cf6a4c", "cterm": "215" }
 let s:_lightred2   = { "gui": "#ab7967", "cterm": "137" }
@@ -167,10 +168,10 @@ if (!s:low_color)
   call s:highlight_group("Todo", {"format": "reverse"})
   call s:highlight_group("Type", {"fg": s:_purple2})
   call s:highlight_group("Underlined", {"fg": s:_teal, "format": "underline"})
-  call s:highlight_group("Pmenu", {"fg": s:_white, "bg": s:_lightblack3})
-  call s:highlight_group("PmenuSbar", {"bg": s:_grey})
-  call s:highlight_group("PmenuSel", {"fg": s:_bg, "bg": s:_teal})
-  call s:highlight_group("PmenuThumb", {"fg": s:_teal, "bg": s:_teal})
+  call s:highlight_group("Pmenu", {"fg": s:_white, "bg": s:_lightblack2})
+  call s:highlight_group("PmenuSbar", {"bg": s:_lightblack2})
+  call s:highlight_group("PmenuSel", {"fg": s:_bg, "bg": s:_purple})
+  call s:highlight_group("PmenuThumb", {"fg": s:_darkblack, "bg": s:_darkblack})
   call s:highlight_group("ErrorMsg", {"fg": s:_bg, "bg": s:_lightred})
   call s:highlight_group("ModeMsg", {"fg": s:_bg, "bg": s:_green2})
   call s:highlight_group("MoreMsg", {"fg": s:_teal})
@@ -337,6 +338,18 @@ hi link diffOnly WarningMsg
 hi link diffRemoved WarningMsg
 hi link diffAdded String
 hi link QuickFixLine Search
+
+
+" nvim-treesitter
+" -----
+hi link TSConstBuiltin Constant
+hi link TSStringRegex  SpecialChar
+hi link TSStringEscape Character
+hi link TSFuncBuiltin Function
+hi link TSConstructor Typedef
+hi link TSVariableBuiltin Identifier
+hi link TSURI Tag
+
 
 let g:terminal_ansi_colors = [
         \ s:_black.gui,
