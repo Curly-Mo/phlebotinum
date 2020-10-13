@@ -67,9 +67,10 @@ let s:_grey        = { "gui": "#6c6c6c", "cterm": "242" }
 let s:_lightgrey   = { "gui": "#808080", "cterm": "244" }
 let s:_lightgrey2  = { "gui": "#c0c5ce", "cterm": "251" }
 let s:_lightgrey3  = { "gui": "#cdd3de", "cterm": "252" }
-let s:_coolgrey    = { "gui": "#65737e", "cterm": "66" }
-let s:_coolgrey2   = { "gui": "#4f5b66", "cterm": "59" }
-let s:_coolgrey3   = { "gui": "#a7adba", "cterm": "145" }
+let s:_coolgrey    = { "gui": "#4f5b66", "cterm": "59" }
+let s:_coolgrey2   = { "gui": "#65737e", "cterm": "66" }
+let s:_coolgrey3   = { "gui": "#8090a0", "cterm": "103" }
+let s:_coolgrey4   = { "gui": "#a7adba", "cterm": "145" }
 let s:_darkwhite   = { "gui": "#888888", "cterm": "245" }
 let s:_darkwhite2  = { "gui": "#d8dee9", "cterm": "188" }
 let s:_white       = { "gui": "#bcbcbc", "cterm": "250" }
@@ -79,11 +80,12 @@ let s:_darkred2    = { "gui": "#703020", "cterm": "131" }
 let s:_red         = { "gui": "#af5f5f", "cterm": "131" }
 let s:_lightred    = { "gui": "#cf6a4c", "cterm": "215" }
 let s:_lightred2   = { "gui": "#ab7967", "cterm": "137" }
-let s:_yellow      = { "gui": "#e6db74", "cterm": "184" }
+let s:_brown       = { "gui": "#af5f00", "cterm": "130" }
 let s:_orange      = { "gui": "#fac863", "cterm": "221" }
 let s:_orange2     = { "gui": "#ffba7b", "cterm": "215" }
 let s:_orange3     = { "gui": "#ffb964", "cterm": "215" }
-let s:_brown       = { "gui": "#87875f", "cterm": "101" }
+let s:_yellow      = { "gui": "#e6db74", "cterm": "184" }
+let s:_wheat       = { "gui": "#87875f", "cterm": "101" }
 let s:_green       = { "gui": "#5f875f", "cterm": "65" }
 let s:_green2      = { "gui": "#99ad6a", "cterm": "108" }
 let s:_green3      = { "gui": "#87af87", "cterm": "108" }
@@ -150,23 +152,24 @@ if (!s:low_color)
   call s:highlight_group("Normal", { "fg": s:_fg, "bg": s:_bg })
   call s:highlight_group("NonText", {"fg": s:_grey})
   call s:highlight_group("EndOfBuffer", {"fg": s:_grey})
-  call s:highlight_group("LineNr", {"fg": s:_grey, "bg": s:_black})
-  call s:highlight_group("FoldColumn", {"fg": s:_grey, "bg": s:_black})
-  call s:highlight_group("Folded", {"fg": s:_grey, "bg": s:_black})
-  call s:highlight_group("MatchParen", {"fg": s:_orange, "bg": s:_black})
-  call s:highlight_group("SignColumn", {"fg": s:_grey, "bg": s:_black})
-  call s:highlight_group("Comment", {"fg": s:_lightgrey, "format": "italic"})
+  call s:highlight_group("LineNr", {"fg": s:_grey, "bg": s:_bg})
+  call s:highlight_group("FoldColumn", {"fg": s:_grey, "bg": s:_bg})
+  call s:highlight_group("Folded", {"fg": s:_grey, "bg": s:_bg})
+  call s:highlight_group("MatchParen", {"fg": s:_orange, "bg": s:_bg})
+  call s:highlight_group("SignColumn", {"fg": s:_grey, "bg": s:_bg})
+  call s:highlight_group("Comment", {"fg": s:_coolgrey3, "format": "italic"})
   call s:highlight_group("Conceal", {"fg": s:_white})
-  call s:highlight_group("Constant", {"fg": s:_lightred})
+  call s:highlight_group("Constant", {"fg": s:_red})
   call s:highlight_group("Error", {"fg": s:_lightred, "format": "reverse"})
-  call s:highlight_group("Identifier", {"fg": s:_pink})
+  call s:highlight_group("Identifier", {"fg": s:_teal})
   call s:highlight_group("Ignore", {})
-  call s:highlight_group("PreProc", {"fg": s:_blue2})
-  call s:highlight_group("Special", {"fg": s:_teal})
-  call s:highlight_group("Statement", {"fg": s:_blue4})
-  call s:highlight_group("String", {"fg": s:_green2})
+  call s:highlight_group("PreProc", {"fg": s:_purple})
+  call s:highlight_group("Special", {"fg": s:_purple})
+  call s:highlight_group("Statement", {"fg": s:_brown})
+  call s:highlight_group("String", {"fg": s:_red})
   call s:highlight_group("Todo", {"format": "reverse"})
-  call s:highlight_group("Type", {"fg": s:_purple2})
+  call s:highlight_group("Type", {"fg": s:_green})
+  call s:highlight_group("TypeDef", {"fg": s:_purple})
   call s:highlight_group("Underlined", {"fg": s:_teal, "format": "underline"})
   call s:highlight_group("Pmenu", {"fg": s:_white, "bg": s:_lightblack2})
   call s:highlight_group("PmenuSbar", {"bg": s:_lightblack2})
@@ -177,15 +180,15 @@ if (!s:low_color)
   call s:highlight_group("MoreMsg", {"fg": s:_teal})
   call s:highlight_group("Question", {"fg": s:_green2})
   call s:highlight_group("WarningMsg", {"fg": s:_lightred})
-  call s:highlight_group("TabLine", {"fg": s:_brown, "bg": s:_lightblack3})
+  call s:highlight_group("TabLine", {"fg": s:_wheat, "bg": s:_lightblack3})
   call s:highlight_group("TabLineFill", {"fg": s:_lightblack3, "bg": s:_lightblack3})
-  call s:highlight_group("TabLineSel", {"fg": s:_bg, "bg": s:_brown})
-  call s:highlight_group("ToolbarLine", {"bg": s:_black})
+  call s:highlight_group("TabLineSel", {"fg": s:_bg, "bg": s:_wheat})
+  call s:highlight_group("ToolbarLine", {"bg": s:_bg})
   call s:highlight_group("ToolbarButton", {"fg": s:_white, "bg": s:_grey})
   call s:highlight_group("Cursor", {"bg": s:_grey})
   call s:highlight_group("CursorColumn", {"bg": s:_lightblack2})
-  call s:highlight_group("CursorLineNr", {"fg": s:_cyan2, "bg": s:_lightblack2})
-  call s:highlight_group("CursorLine", {"bg": s:_lightblack2})
+  call s:highlight_group("CursorLineNr", {"fg": s:_fg, "bg": s:_lightblack})
+  call s:highlight_group("CursorLine", {"bg": s:_lightblack})
   call s:highlight_group("helpLeadBlank", {})
   call s:highlight_group("helpNormal", {})
   call s:highlight_group("StatusLine", {"fg": s:_grey, "bg": s:_darkblack})
@@ -196,13 +199,13 @@ if (!s:low_color)
   call s:highlight_group("VisualNOS", {"format": "underline"})
   call s:highlight_group("VertSplit", {"fg": s:_grey, "bg": s:_bg})
   call s:highlight_group("WildMenu", {"fg": s:_bg, "bg": s:_blue3})
-  call s:highlight_group("Function", {"fg": s:_orange})
+  call s:highlight_group("Function", {"fg": s:_teal})
   call s:highlight_group("SpecialKey", {"fg": s:_grey})
   call s:highlight_group("Title", {"fg": s:br_white})
   call s:highlight_group("DiffAdd", {"fg": s:_green2, "bg": s:_bg, "format": "reverse"})
   call s:highlight_group("DiffChange", {"fg": s:_purple2, "bg": s:_bg, "format": "reverse"})
   call s:highlight_group("DiffDelete", {"fg": s:_lightred, "bg": s:_bg, "format": "reverse"})
-  call s:highlight_group("DiffText", {"fg": s:_orange, "bg": s:_bg, "format": "reverse"})
+  call s:highlight_group("DiffText", {"fg": s:_brown, "bg": s:_bg, "format": "reverse"})
   call s:highlight_group("IncSearch", {"fg": s:_pink2, "bg": s:_bg, "format": "underline"})
   call s:highlight_group("Search", {"fg": s:_lightblack, "bg": s:_pink2, "format": "underline"})
   call s:highlight_group("Directory", {"fg": s:_cyan2})
@@ -212,7 +215,7 @@ if (!s:low_color)
   call s:highlight_group("SpellCap", {"fg": s:_cyan2, "format": "undercurl", "sp": s:_cyan2})
   call s:highlight_group("SpellLocal", {"fg": s:_green, "format": "undercurl", "sp": s:_green})
   call s:highlight_group("SpellRare", {"fg": s:_orange, "format": "undercurl", "sp": s:_orange})
-  call s:highlight_group("ColorColumn", {"bg": s:_black})
+  call s:highlight_group("ColorColumn", {"bg": s:_bg})
 
 " False Colors
 " -----------
@@ -358,7 +361,7 @@ let g:terminal_ansi_colors = [
         \ s:_brown.gui,
         \ s:_blue.gui,
         \ s:_purple.gui,
-        \ s:_green.gui,
+        \ s:_teal.gui,
         \ s:_grey.gui,
         \ s:_lightblack3.gui,
         \ s:_orange.gui,
@@ -377,7 +380,7 @@ if has("nvim") && exists("&termguicolors") && &termguicolors
   let g:terminal_color_3  = s:_brown.gui
   let g:terminal_color_4  = s:_blue.gui
   let g:terminal_color_5  = s:_purple.gui
-  let g:terminal_color_6  = s:_green.gui
+  let g:terminal_color_6  = s:_teal.gui
   let g:terminal_color_7  = s:_grey.gui
   let g:terminal_color_8  = s:_lightblack3.gui
   let g:terminal_color_9  = s:_orange.gui
