@@ -108,7 +108,7 @@ let g:airline#themes#phlebotinum#palette.normal_modified = s:modified
 " Insert mode
 let s:I1 = [ s:_bg.gui, s:_teal.gui, s:_bg.cterm, s:_teal.cterm  ]
 let s:I2 = s:N2
-let s:I3 = [ s:_grey.gui, s:_darkblack.gui, s:_grey.cterm, s:_darkblack.cterm  ]
+let s:I3 = [ s:_grey.gui, s:_darkerblack.gui, s:_grey.cterm, s:_darkerblack.cterm  ]
 let g:airline#themes#phlebotinum#palette.insert = airline#themes#generate_color_map(s:I1, s:I2, s:I3)
 let g:airline#themes#phlebotinum#palette.insert_modified = s:modified
 
@@ -120,16 +120,16 @@ let g:airline#themes#phlebotinum#palette.visual = airline#themes#generate_color_
 let g:airline#themes#phlebotinum#palette.visual_modified = s:modified
 
 " Replace mode
-let s:R1 = [ s:_darkred2.gui, s:_lightblack.gui, s:_darkred2.cterm, s:_darkblack.cterm ]
+let s:R1 = [ s:_darkred2.gui, s:_lightblack.gui, s:_darkred2.cterm, s:_darkerblack.cterm ]
 let s:R2 = s:N2
 let s:R3 = s:I3
 let g:airline#themes#phlebotinum#palette.replace = airline#themes#generate_color_map(s:R1, s:R2, s:R3)
 let g:airline#themes#phlebotinum#palette.replace_modified = s:modified
 
 " Inactive mode
-let s:IN1 = [ s:_grey.gui, s:_darkblack.gui, s:_grey.cterm, s:_darkblack.cterm ]
-let s:IN2 = [ s:_grey.gui, s:_darkblack.gui, s:_grey.cterm, s:_darkblack.cterm ]
-let s:IN3 = [ s:_grey.gui, s:_darkblack.gui, s:_grey.cterm, s:_darkblack.cterm ]
+let s:IN1 = [ s:_grey.gui, s:_darkerblack.gui, s:_grey.cterm, s:_darkerblack.cterm ]
+let s:IN2 = [ s:_grey.gui, s:_darkerblack.gui, s:_grey.cterm, s:_darkerblack.cterm ]
+let s:IN3 = [ s:_grey.gui, s:_darkerblack.gui, s:_grey.cterm, s:_darkerblack.cterm ]
 let g:airline#themes#phlebotinum#palette.inactive = airline#themes#generate_color_map(s:IN1, s:IN2, s:IN3)
 let g:airline#themes#phlebotinum#palette.inactive_modified = s:modified
 
