@@ -48,9 +48,10 @@ let s:_grey        = { "gui": "#6c6c6c", "cterm": "242" }
 let s:_lightgrey   = { "gui": "#808080", "cterm": "244" }
 let s:_lightgrey2  = { "gui": "#c0c5ce", "cterm": "251" }
 let s:_lightgrey3  = { "gui": "#cdd3de", "cterm": "252" }
-let s:_coolgrey    = { "gui": "#65737e", "cterm": "66" }
-let s:_coolgrey2   = { "gui": "#4f5b66", "cterm": "59" }
-let s:_coolgrey3   = { "gui": "#a7adba", "cterm": "145" }
+let s:_coolgrey    = { "gui": "#4f5b66", "cterm": "59" }
+let s:_coolgrey2   = { "gui": "#65737e", "cterm": "66" }
+let s:_coolgrey3   = { "gui": "#8090a0", "cterm": "103" }
+let s:_coolgrey4   = { "gui": "#a7adba", "cterm": "145" }
 let s:_darkwhite   = { "gui": "#888888", "cterm": "245" }
 let s:_darkwhite2  = { "gui": "#d8dee9", "cterm": "188" }
 let s:_white       = { "gui": "#bcbcbc", "cterm": "250" }
@@ -60,11 +61,12 @@ let s:_darkred2    = { "gui": "#703020", "cterm": "131" }
 let s:_red         = { "gui": "#af5f5f", "cterm": "131" }
 let s:_lightred    = { "gui": "#cf6a4c", "cterm": "215" }
 let s:_lightred2   = { "gui": "#ab7967", "cterm": "137" }
-let s:_yellow      = { "gui": "#e6db74", "cterm": "184" }
+let s:_brown       = { "gui": "#af5f00", "cterm": "130" }
 let s:_orange      = { "gui": "#fac863", "cterm": "221" }
 let s:_orange2     = { "gui": "#ffba7b", "cterm": "215" }
 let s:_orange3     = { "gui": "#ffb964", "cterm": "215" }
-let s:_brown       = { "gui": "#87875f", "cterm": "101" }
+let s:_yellow      = { "gui": "#e6db74", "cterm": "184" }
+let s:_wheat       = { "gui": "#87875f", "cterm": "101" }
 let s:_green       = { "gui": "#5f875f", "cterm": "65" }
 let s:_green2      = { "gui": "#99ad6a", "cterm": "108" }
 let s:_green3      = { "gui": "#87af87", "cterm": "108" }
@@ -91,7 +93,7 @@ let s:br_cyan      = { "gui": "#5fb3b3", "cterm": "73" }
 let s:br_white     = { "gui": "#ffffff", "cterm": "231" }
 
 let s:_fg          = { "gui": s:_white.gui, "cterm": s:_white.cterm }
-let s:_bg          = { "gui": s:_lightblack.gui, "cterm": s:_lightblack.cterm }
+let s:_bg          = { "gui": s:background_color, "cterm": s:_lightblack.cterm }
 
 let g:airline#themes#phlebotinum#palette = {}
 let s:modified = { 'airline_c': [ s:_orange2.gui, '', s:_orange2.cterm, '', '' ] }
@@ -130,6 +132,11 @@ let s:IN2 = [ s:_grey.gui, s:_darkblack.gui, s:_grey.cterm, s:_darkblack.cterm ]
 let s:IN3 = [ s:_grey.gui, s:_darkblack.gui, s:_grey.cterm, s:_darkblack.cterm ]
 let g:airline#themes#phlebotinum#palette.inactive = airline#themes#generate_color_map(s:IN1, s:IN2, s:IN3)
 let g:airline#themes#phlebotinum#palette.inactive_modified = s:modified
+
+" red accent used by readonly lock symbol
+let g:airline#themes#phlebotinum#palette.accents = {
+      \ 'red': [ s:_darkred2.gui , '' , s:_darkred2.cterm , ''  ]
+      \ }
 
 " CtrlP
 if !get(g:, 'loaded_ctrlp', 0)
