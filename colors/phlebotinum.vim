@@ -57,7 +57,9 @@ endif
 
 " palettes
 " --------
-let s:_darkblack   = { "gui": "#151515", "cterm": "16" }
+let s:_trueblack   = { "gui": "#000000", "cterm": "16" }
+let s:_darkerblack = { "gui": "#080808", "cterm": "232" }
+let s:_darkblack   = { "gui": "#121212", "cterm": "233" }
 let s:_black       = { "gui": "#1c1c1c", "cterm": "234" }
 let s:_lightblack  = { "gui": "#262626", "cterm": "235" }
 let s:_lightblack2 = { "gui": "#303030", "cterm": "236" }
