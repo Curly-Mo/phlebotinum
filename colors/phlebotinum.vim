@@ -2,7 +2,7 @@
 " Author:      Curly-Mo (github.com/Curly-Mo)
 " Author:      Colin Fahy (colin@cfahy.com)
 " Webpage:     https://github.com/Curly-Mo/phlebotinum
-" Version:     1.01
+" Version:     1.02
 " License:     LGPL
 " Description: When the Apprentice got his hands on some magic Beans.
 
@@ -60,7 +60,8 @@ endif
 let s:_trueblack   = { "gui": "#000000", "cterm": "16" }
 let s:_darkerblack = { "gui": "#080808", "cterm": "232" }
 let s:_darkblack   = { "gui": "#121212", "cterm": "233" }
-let s:_black       = { "gui": "#1c1c1c", "cterm": "234" }
+let s:_black       = { "gui": "#181818", "cterm": "233" }
+let s:_black2      = { "gui": "#1c1c1c", "cterm": "234" }
 let s:_lightblack  = { "gui": "#262626", "cterm": "235" }
 let s:_lightblack2 = { "gui": "#303030", "cterm": "236" }
 let s:_lightblack3 = { "gui": "#444444", "cterm": "238" }
@@ -165,7 +166,7 @@ if (!s:low_color)
   call s:highlight_group("Error", {"fg": s:_lightred, "format": "reverse"})
   call s:highlight_group("Identifier", {"fg": s:_teal})
   call s:highlight_group("Ignore", {})
-  call s:highlight_group("PreProc", {"fg": s:_purple})
+  call s:highlight_group("PreProc", {"fg": s:_blue5})
   call s:highlight_group("Special", {"fg": s:_purple})
   call s:highlight_group("Statement", {"fg": s:_brown})
   call s:highlight_group("String", {"fg": s:_red})
@@ -189,8 +190,8 @@ if (!s:low_color)
   call s:highlight_group("ToolbarButton", {"fg": s:_white, "bg": s:_grey})
   call s:highlight_group("Cursor", {"bg": s:_grey})
   call s:highlight_group("CursorColumn", {"bg": s:_lightblack2})
-  call s:highlight_group("CursorLineNr", {"fg": s:_fg, "bg": s:_lightblack})
-  call s:highlight_group("CursorLine", {"bg": s:_lightblack})
+  call s:highlight_group("CursorLineNr", {"fg": s:_fg, "bg": s:_black2})
+  call s:highlight_group("CursorLine", {"bg": s:_black2})
   call s:highlight_group("helpLeadBlank", {})
   call s:highlight_group("helpNormal", {})
   call s:highlight_group("StatusLine", {"fg": s:_grey, "bg": s:_darkblack})
