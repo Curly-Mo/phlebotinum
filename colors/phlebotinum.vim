@@ -43,11 +43,6 @@ if has_key(s:overrides, "background") && has_key(s:overrides["background"], "gui
   let s:background_color = s:overrides["background"]["guibg"]
 endif
 
-let s:disable_italics = 0
-if has_key(s:overrides, "disable_italics")
-  let s:disable_italics = s:overrides["disable_italics"]
-endif
-
 " TODO: do something with this
 if exists("g:phlebotinum_black")
   let s:termBlack = g:phlebotinum_black
@@ -101,10 +96,13 @@ let s:_blue2       = { "gui": "#8fbfdc", "cterm": "110" }
 let s:_blue3       = { "gui": "#8fafd7", "cterm": "110" }
 let s:_blue4       = { "gui": "#8197bf", "cterm": "67" }
 let s:_blue5       = { "gui": "#5f87af", "cterm": "67" }
+let s:_blue6       = { "gui": "#7587a6", "cterm": "103" }
 let s:_purple      = { "gui": "#5f5f87", "cterm": "60" }
 let s:_purple2     = { "gui": "#8787af", "cterm": "103" }
+let s:_purple3     = { "gui": "#875f87", "cterm": "96" }
 let s:_pink        = { "gui": "#c6b6ee", "cterm": "183" }
 let s:_pink2       = { "gui": "#c594c5", "cterm": "176" }
+let s:_pink3       = { "gui": "#d7afff", "cterm": "183" }
 
 let s:br_green     = { "gui": "#008080", "cterm": "6" }
 let s:br_yellow    = { "gui": "#ffffaf", "cterm": "229" }
@@ -120,30 +118,21 @@ let s:_bg          = { "gui": s:background_color, "cterm": s:_lightblack.cterm }
 " Convenience method for setting highlight group
 " --------
 function! s:highlight_group(group, style)
-  let s:ctermformat = "NONE"
-  let s:guiformat = "NONE"
-  if has_key(a:style, "format")
-    let s:ctermformat = a:style.format
-    let s:guiformat = a:style.format
-  endif
-  if s:disable_italics == 1
-    let s:ctermformat = substitute(s:ctermformat, ",italic", "", "")
-    let s:ctermformat = substitute(s:ctermformat, "italic,", "", "")
-    let s:ctermformat = substitute(s:ctermformat, "italic", "", "")
-    let s:guiformat = substitute(s:guiformat, ",italic", "", "")
-    let s:guiformat = substitute(s:guiformat, "italic,", "", "")
-    let s:guiformat = substitute(s:guiformat, "italic", "", "")
-  endif
   let l:ctermfg = (has_key(a:style, "fg") ? a:style.fg.cterm : "NONE")
   let l:ctermbg = (has_key(a:style, "bg") ? a:style.bg.cterm : "NONE")
+  let l:guifg = (has_key(a:style, "fg") ? a:style.fg.gui : "NONE")
+  let l:guibg = (has_key(a:style, "bg") ? a:style.bg.gui : "NONE")
+  let l:ctermformat = (has_key(a:style, "format") ? a:style.format : "NONE")
+  let l:guiformat = (has_key(a:style, "format") ? a:style.format : "NONE")
+  let l:guisp = (has_key(a:style, "sp") ? a:style.sp.gui : "NONE")
   execute "highlight" a:group
-    \ "guifg="   (has_key(a:style, "fg") ? a:style.fg.gui : "NONE")
-    \ "guibg="   (has_key(a:style, "bg") ? a:style.bg.gui : "NONE")
-    \ "guisp="   (has_key(a:style, "sp") ? a:style.sp.gui : "NONE")
-    \ "gui="     (!empty(s:guiformat) ? s:guiformat : "NONE")
+    \ "guifg="   . l:guifg
+    \ "guibg="   . l:guibg
+    \ "guisp="   . l:guisp
+    \ "gui="     . l:guiformat
     \ "ctermfg=" . l:ctermfg
     \ "ctermbg=" . l:ctermbg
-    \ "cterm="   (!empty(s:ctermformat) ? s:ctermformat : "NONE")
+    \ "cterm="   . l:ctermformat
 endfunction
 
 
@@ -162,7 +151,7 @@ if (!s:low_color)
   call s:highlight_group("SignColumn", {"fg": s:_grey, "bg": s:_bg})
   call s:highlight_group("Comment", {"fg": s:_coolgrey3, "format": "italic"})
   call s:highlight_group("Conceal", {"fg": s:_white})
-  call s:highlight_group("Constant", {"fg": s:_red})
+  call s:highlight_group("Constant", {"fg": s:_purple3})
   call s:highlight_group("Error", {"fg": s:_lightred, "format": "reverse"})
   call s:highlight_group("Identifier", {"fg": s:_teal})
   call s:highlight_group("Ignore", {})
@@ -198,17 +187,17 @@ if (!s:low_color)
   call s:highlight_group("StatusLineNC", {"fg": s:_white, "bg": s:_darkblack})
   " call s:highlight_group("StatusLineTerm", {"fg": s:_grey, "bg": s:_darkblack})
   " call s:highlight_group("StatusLineTermNC", {"fg": s:_grey, "bg": s:_darkblack})
-  call s:highlight_group("Visual", {"fg": s:_blue3, "bg": s:_bg, "format": "reverse"})
+  call s:highlight_group("Visual", {"fg": s:_blue3, "format": "reverse"})
   call s:highlight_group("VisualNOS", {"format": "underline"})
   call s:highlight_group("VertSplit", {"fg": s:_grey, "bg": s:_bg})
   call s:highlight_group("WildMenu", {"fg": s:_bg, "bg": s:_blue3})
   call s:highlight_group("Function", {"fg": s:_teal})
   call s:highlight_group("SpecialKey", {"fg": s:_grey})
   call s:highlight_group("Title", {"fg": s:br_white})
-  call s:highlight_group("DiffAdd", {"fg": s:_green2, "bg": s:_bg, "format": "reverse"})
-  call s:highlight_group("DiffChange", {"fg": s:_purple2, "bg": s:_bg, "format": "reverse"})
-  call s:highlight_group("DiffDelete", {"fg": s:_lightred, "bg": s:_bg, "format": "reverse"})
-  call s:highlight_group("DiffText", {"fg": s:_brown, "bg": s:_bg, "format": "reverse"})
+  call s:highlight_group("DiffAdd", {"fg": s:_green, "format": "reverse"})
+  call s:highlight_group("DiffChange", {"fg": s:_purple2, "format": "reverse"})
+  call s:highlight_group("DiffDelete", {"fg": s:_darkred2, "format": "reverse"})
+  call s:highlight_group("DiffText", {"fg": s:_brown, "format": "reverse"})
   call s:highlight_group("IncSearch", {"fg": s:_pink2, "bg": s:_bg, "format": "underline"})
   call s:highlight_group("Search", {"fg": s:_lightblack, "bg": s:_pink2, "format": "underline"})
   call s:highlight_group("Directory", {"fg": s:_cyan2})
