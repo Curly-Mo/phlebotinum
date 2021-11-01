@@ -1,0 +1,19 @@
+documentation
+*@shortname.txt*                                            Last change: @date
+
+                  @fullname color scheme    by @author
+
+@fullname, @description
+
+==============================================================================
+Color scheme options                                       @shortname-options*
+
+                                              *g:@optionprefix_transparent_bg*
+Set to 1 if you want a transparent background.
+>
+ let g:@optionprefix_transp_bg = 0
+<
+
+ vim:tw=78:ts=8:noet:ft=help:norl:
+
+enddocumentation

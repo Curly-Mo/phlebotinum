@@ -208,6 +208,11 @@ if (!s:low_color)
   call s:highlight_group("SpellLocal", {"fg": s:_green, "format": "undercurl", "sp": s:_green})
   call s:highlight_group("SpellRare", {"fg": s:_orange, "format": "undercurl", "sp": s:_orange})
   call s:highlight_group("ColorColumn", {"bg": s:_bg})
+  " Plugins
+  " ---------------------------
+  call s:highlight_group("GitGutterAdd", {"fg": s:_green})
+  call s:highlight_group("GitGutterChange", {"fg": s:_purple2})
+  call s:highlight_group("GitGutterDelete", {"fg": s:_darkred2})
 
 " False Colors
 " -----------
