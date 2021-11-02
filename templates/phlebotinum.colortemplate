@@ -15,6 +15,9 @@ Neovim:        yes
 Include: _help.colortemplate
 Background: dark
 
+; User config
+#let s:bg_color = get(g:, '@optionprefix_bg', 'NONE')
+
 ; Color palette
 ; Color name         GUI                     Base256     Base16 (optional)
 Color: trueblack     rgb(  0,  0,  0)          ~         Black
@@ -46,6 +49,7 @@ Color: brown         #af5f00                   ~         Brown
 Color: orange        #fac863                   ~         Brown
 Color: orange2       #ffba7b                   ~         Brown
 Color: orange3       #ffb964                   ~         Brown
+Color: orange4       #f39b35                   ~         Brown
 Color: yellow        #e6db74                   ~         LightYellow
 Color: wheat         #87875f                   ~         Brown
 Color: green         #5f875f                   ~         DarkGreen
@@ -53,14 +57,15 @@ Color: green2        #99ad6a                   ~         Green
 Color: green3        #87af87                   ~         Green
 Color: teal          #5f8787                   ~         DarkCyan
 Color: cyan          #008080                   ~         DarkCyan
-Color: cyan2         #5fafaf                   ~         LightCyan
-Color: cyan3         #5fb3b3                   ~         LightCyan
-Color: blue          #b1d8f6                   ~         Blue
-Color: blue2         #8fbfdc                   ~         Blue
-Color: blue3         #8fafd7                   ~         Blue
-Color: blue4         #8197bf                   ~         DarkBlue
-Color: blue5         #5f87af                   ~         DarkBlue
-Color: blue6         #7587a6                   ~         DarkBlue
+Color: cyan2         #00a7aa                   ~         LightCyan
+Color: cyan3         #5fafaf                   ~         LightCyan
+Color: cyan4         #5fb3b3                   ~         LightCyan
+Color: lightblue     #b1d8f6                   ~         Blue
+Color: lightblue2    #8fbfdc                   ~         Blue
+Color: lightblue3    #8fafd7                   ~         Blue
+Color: lightblue4    #8197bf                   ~         Blue
+Color: blue          #5f87af                   ~         DarkBlue
+Color: blue2         #7587a6                   ~         DarkBlue
 Color: purple        #5f5f87                   ~         DarkMagenta
 Color: purple2       #8787af                   ~         DarkMagenta
 Color: purple3       #875f87                   ~         DarkMagenta
@@ -75,133 +80,133 @@ Color: br_purple     #c594c5                   ~         LightMagenta
 Color: br_cyan       #5fb3b3                   ~         LightCyan
 Color: br_white      #ffffff                   ~         White
 Color: fg_           #bcbcbc                   ~         Grey
-Color: bg_           #262626                   ~         Black
+#if s:bg_color != "NONE" && s:bg_color != "none"
+  Color: bg_           #262626              ~         Black
+  Normal             fg_          bg_
+#else
+  Normal             fg_          none
+#endif
+
+; Variant: gui
+; #if get(g:, '@optionprefix_bg', 0) && !has('gui_running')
+; Variant: 256 8
+; #if get(g:, '@optionprefix_bg', 0)
+; Variant: gui 256 8
+;   Color: bg_           #262626                   ~         Black
+; #else
+; #endif
 
 ; Terminal colors
 Term colors: black lightred green brown blue purple teal grey
 Term colors: lightblack orange green2 yellow
 Term colors: blue purple2 cyan2 white
 
-; Default highlight groups
-; Variant: gui
-; #if get(g:, '@optionprefix_transpbg_', 0) && !has('gui_running')
-; Variant: 256 8
-; #if get(g:, '@optionprefix_transpbg_', 0)
-; Variant: gui 256 8
-;     Normal           white             none
-;     Terminal         white             none
-; #else
-;     Normal           white             black
-;     Terminal         white             black
-; #endif
-
 ; Group            Foreground   Background   Attributes
-Normal             fg_          bg_                         
-NonText            grey         none                       
-EndOfBuffer        grey         none                       
-LineNr             grey         bg_                        
-FoldColumn         grey         bg_                        
-Folded             grey         bg_                        
-MatchParen         orange       bg_                        
-SignColumn         grey         bg_                        
-Comment            coolgrey3    none         italic        
-Conceal            white        none                       
-Constant           purple3      none                       
-Error              lightred     none         reverse       
-Identifier         teal         none                       
-Ignore             none         none                       
-PreProc            blue5        none                       
-Special            purple       none                       
-Statement          brown        none                       
-String             red          none                       
-Todo               none         none         reverse       
-Type               green        none                       
-TypeDef            purple       none                       
-Underlined         teal         none         underline     
-Pmenu              white        lightblack2                
-PmenuSbar          none         lightblack2                
-PmenuSel           bg_          purple                     
-PmenuThumb         darkblack    darkblack                  
-ErrorMsg           bg_          lightred                   
-ModeMsg            bg_          green2                     
-MoreMsg            teal         none                       
-Question           green2       none                       
-WarningMsg         lightred     none                       
-TabLine            wheat        lightblack3                
-TabLineFill        lightblack3  lightblack3                
-TabLineSel         bg_          wheat                      
-ToolbarLine        none         bg_                        
-ToolbarButton      white        grey                       
-Cursor             none         grey                                
-CursorColumn       none         lightblack2                
-CursorLineNr       fg_          black2                     
-CursorLine         none         black2                     
-helpLeadBlank      none         none                       
-helpNormal         none         none                       
-StatusLine         grey         darkblack                  
-StatusLineNC       white        darkblack                  
-;StatusLineTerm    grey         darkblack                  
-;StatusLineTermNC  grey         darkblack                  
-Visual             blue3        none         reverse       
-VisualNOS          none         none         underline                               
-VertSplit          grey         bg_                        
-WildMenu           bg_          blue3                      
-Function           teal         none                       
-SpecialKey         grey         none                       
-Title              br_white     none                       
-DiffAdd            green        none         reverse       
-DiffChange         purple2      none         reverse       
-DiffDelete         darkred2     none         reverse       
-DiffText           brown        none         reverse       
-IncSearch          bg_          none         underline     
-Search             pink2        none         underline     
-Directory          cyan2        none                       
-debugPC            none         blue                       
-debugBreakpoint    none         lightred                   
+NonText            grey         none
+EndOfBuffer        grey         none
+LineNr             grey         none
+FoldColumn         grey         none
+Folded             grey         none
+MatchParen         orange       none
+SignColumn         grey         none
+Comment            coolgrey3    none         italic
+Conceal            white        none
+; Constant           purple3      none
+Constant           lightred     none
+Number             red          none
+Error              lightred     none         reverse
+Identifier         teal         none
+Ignore             none         none
+PreProc            blue         none
+Special            purple       none
+Statement          brown        none
+String             red          none
+Todo               none         none         reverse
+Type               green        none
+TypeDef            purple       none
+Underlined         teal         none         underline
+Pmenu              white        lightblack2
+PmenuSbar          none         lightblack2
+PmenuSel           purple       none         reverse
+PmenuThumb         darkblack    darkblack
+ErrorMsg           lightred     none         reverse
+ModeMsg            green2       none         reverse
+MoreMsg            teal         none
+Question           green2       none
+WarningMsg         lightred     none
+TabLine            wheat        lightblack3
+TabLineFill        lightblack3  lightblack3
+TabLineSel         wheat        none         reverse
+ToolbarLine        none         none
+ToolbarButton      white        grey
+Cursor             none         grey
+CursorColumn       none         lightblack2
+CursorLineNr       fg_          black2
+CursorLine         none         black2
+helpLeadBlank      none         none
+helpNormal         none         none
+StatusLine         grey         darkblack
+StatusLineNC       white        darkblack
+;StatusLineTerm    grey         darkblack
+;StatusLineTermNC  grey         darkblack
+Visual             lightblue3   none         reverse
+VisualNOS          none         none         underline
+VertSplit          grey         none
+WildMenu           lightblue3   none         reverse
+Function           blue         none
+SpecialKey         grey         none
+Title              br_white     none
+DiffAdd            green        none         reverse
+DiffChange         purple2      none         reverse
+DiffDelete         darkred2     none         reverse
+DiffText           brown        none         reverse
+IncSearch          bg_          none         underline
+Search             pink2        none         underline
+Directory          cyan2        none
+debugPC            none         blue
+debugBreakpoint    none         lightred
 SpellBad           lightred     none         undercurl  ; guisp=lightred
 SpellCap           cyan2        none         undercurl  ; guisp=cyan2
 SpellLocal         green        none         undercurl  ; guisp=green
 SpellRare          orange       none         undercurl  ; guisp=orange
-ColorColumn        none         bg_                        
-; Plugins                                 
-GitGutterAdd       green        none                       
-GitGutterChange    purple2      none                       
-GitGutterDelete    darkred2     none                       
+ColorColumn        none         none
+; Plugins
+GitGutterAdd       green        none
+GitGutterChange    purple2      none
+GitGutterDelete    darkred2     none
 
 ; Common linked groups
-Boolean                  -> Constant
-Character                -> Constant
-Conditional              -> Statement
-Debug                    -> Special
-Define                   -> PreProc
-Delimiter                -> Special
-Exception                -> Statement
-Float                    -> Constant
-Function                 -> Identifier
-Include                  -> PreProc
-Keyword                  -> Statement
-Label                    -> Statement
-Macro                    -> PreProc
-Number                   -> Constant
-Operator                 -> Statement
-PopupSelected            -> PmenuSel
-PreCondit                -> PreProc
-QuickFixLine             -> Search
-Repeat                   -> Statement
-SpecialChar              -> Special
-SpecialComment           -> Special
-StatusLineTerm           -> StatusLine
-StatusLineTermNC         -> StatusLineNC
-StorageClass             -> Type
-String                   -> Constant
-Structure                -> Type
-Tag                      -> Special
-Typedef                  -> Type
-lCursor                  -> Cursor
+; Boolean                  -> Constant
+; Character                -> Constant
+; Conditional              -> Statement
+; Debug                    -> Special
+; Define                   -> PreProc
+; Delimiter                -> Special
+; Exception                -> Statement
+; Float                    -> Constant
+; Function                 -> Identifier
+; Include                  -> PreProc
+; Keyword                  -> Statement
+; Label                    -> Statement
+; Macro                    -> PreProc
+; Operator                 -> Statement
+; PopupSelected            -> PmenuSel
+; PreCondit                -> PreProc
+; QuickFixLine             -> Search
+; Repeat                   -> Statement
+; SpecialChar              -> Special
+; SpecialComment           -> Special
+; StatusLineTerm           -> StatusLine
+; StatusLineTermNC         -> StatusLineNC
+; StorageClass             -> Type
+; String                   -> Constant
+; Structure                -> Type
+; Tag                      -> Special
+; Typedef                  -> Type
+; lCursor                  -> Cursor
 
 ; Linked groups
 Terminal                 -> Normal
-Number                   -> Constant
 CursorIM                 -> Cursor
 Boolean                  -> Constant
 Character                -> Constant
@@ -217,7 +222,6 @@ Include                  -> PreProc
 Keyword                  -> Statement
 Label                    -> Statement
 Macro                    -> PreProc
-Number                   -> Constant
 Operator                 -> Statement
 PreCondit                -> PreProc
 Repeat                   -> Statement
@@ -258,3 +262,53 @@ TSFuncBuiltin            -> Function
 TSConstructor            -> Typedef
 TSVariableBuiltin        -> Identifier
 TSURI                    -> Tag
+
+; nvim-treesitter
+TSConstBuiltin        purple3  none
+TSFuncBuiltin         teal     none
+TSParameter           purple2  none
+TSParameterReference  purple2  none
+TSOperator            brown    none
+TSTypeBuiltin         purple3  none
+TSVariableBuiltin     purple3  none
+; TSError                = {},
+; TSPunctDelimiter       = { fg = white },
+; TSPunctBracket         = { fg = cyan_dark },
+; TSPunctSpecial         = { fg = cyan },
+; TSConstant             = { fg = yellow },
+; TSConstMacro           = { fg = yellow },
+; TSString               = { fg = green },
+; TSStringRegex          = { fg = cyan_dark },
+; TSStringEscape         = { fg = cyan_dark },
+; TSNumber               = { fg = orange },
+; TSBoolean              = { fg = orange },
+; TSFloat                = { fg = orange },
+; TSFunction             = { fg = blue_light },
+; TSKeywordFunction      = { fg = blue_light },
+; TSFuncMacro            = { fg = orange },
+; TSMethod               = { fg = blue_light },
+; TSField", {"fg": s:_wheat})
+; TSProperty", {"fg": s:_wheat})
+; TSConstructor          = { fg = yellow },
+; TSConditional          = { fg = blue, gui = 'italic' },
+; TSRepeat               = { fg = blue, gui = 'italic' },
+; TSException            = { fg = blue, gui = 'italic' },
+; TSLabel                = { fg = cyan_dark, gui = 'italic' },
+; TSKeyword              = { fg = blue },
+; TSType                 = { fg = yellow },
+; TSStructure            = { fg = orange },
+; TSInclude              = { fg = cyan_dark },
+; TSTag                  = { fg = blue_light },
+; TSTagDelimiter         = { fg = cyan },
+; TSAnnotation = {},
+; TSVariable", {"fg": s:_teal})
+; TSDefinitionUsage = {},
+; TSDefinition = {},
+; TSCurrentScope                 = {},
+; TSText                 = {},
+; TSStrong               = {},
+; TSEmphasis             = {},
+; TSUnderline            = {},
+; TSTitle                = {},
+; TSLiteral              = {},
+; TSURI                  = {},
