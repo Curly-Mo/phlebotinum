@@ -170,10 +170,6 @@ SpellCap           cyan2        none         undercurl  ; guisp=cyan2
 SpellLocal         green        none         undercurl  ; guisp=green
 SpellRare          orange       none         undercurl  ; guisp=orange
 ColorColumn        none         none
-; Plugins
-GitGutterAdd       green        none
-GitGutterChange    purple2      none
-GitGutterDelete    darkred2     none
 
 ; Common linked groups
 ; Boolean                  -> Constant
@@ -254,6 +250,13 @@ diffRemoved              -> WarningMsg
 diffAdded                -> String
 QuickFixLine             -> Search
 
+;; Plugins ;;
+
+; git-gutter
+GitGutterAdd       green        none
+GitGutterChange    purple2      none
+GitGutterDelete    darkred2     none
+
 ; nvim-treesitter
 TSConstBuiltin           -> Constant
 TSStringRegex            -> SpecialChar
@@ -312,3 +315,6 @@ TSVariableBuiltin     purple3  none
 ; TSTitle                = {},
 ; TSLiteral              = {},
 ; TSURI                  = {},
+
+; coc.nvim
+CocInlayHint        coolgrey2  none
