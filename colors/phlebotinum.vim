@@ -101,7 +101,7 @@ hi DiffDelete guifg=#703020 guibg=NONE gui=reverse cterm=reverse
 hi DiffText guifg=#af5f00 guibg=NONE gui=reverse cterm=reverse
 hi IncSearch guifg=#262626 guibg=NONE gui=underline cterm=underline
 hi Search guifg=#c594c5 guibg=NONE gui=underline cterm=underline
-hi Directory guifg=#00a7aa guibg=NONE gui=NONE cterm=NONE
+hi Directory guifg=#5f8787 guibg=NONE gui=NONE cterm=NONE
 hi debugPC guifg=NONE guibg=#5f87af gui=NONE cterm=NONE
 hi debugBreakpoint guifg=NONE guibg=#cf6a4c gui=NONE cterm=NONE
 hi SpellBad guifg=#cf6a4c guibg=NONE gui=undercurl cterm=undercurl
