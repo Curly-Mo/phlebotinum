@@ -99,8 +99,9 @@ hi DiffAdd guifg=#5f875f guibg=NONE gui=reverse cterm=reverse
 hi DiffChange guifg=#8787af guibg=NONE gui=reverse cterm=reverse
 hi DiffDelete guifg=#703020 guibg=NONE gui=reverse cterm=reverse
 hi DiffText guifg=#af5f00 guibg=NONE gui=reverse cterm=reverse
-hi IncSearch guifg=#262626 guibg=NONE gui=underline cterm=underline
 hi Search guifg=#c594c5 guibg=NONE gui=underline cterm=underline
+hi IncSearch guifg=#262626 guibg=NONE gui=underline cterm=underline
+hi CurSearch guifg=#c594c5 guibg=NONE gui=underline cterm=underline
 hi Directory guifg=#5f8787 guibg=NONE gui=NONE cterm=NONE
 hi debugPC guifg=NONE guibg=#5f87af gui=NONE cterm=NONE
 hi debugBreakpoint guifg=NONE guibg=#cf6a4c gui=NONE cterm=NONE
